@@ -41,7 +41,7 @@
       text-align: center;
       margin: 0;
       padding: 20px;
-      overflow: hidden;
+      overflow-x: hidden;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -72,6 +72,8 @@
       border-radius: 5px;
       box-shadow: 0 0 10px var(--color-primary);
       max-width: 600px;
+      width: 100%;
+      box-sizing: border-box;
     }
     
     label {
@@ -148,45 +150,64 @@
     
     .mobile-controls {
       display: none;
-      margin-top: 20px;
+      margin: 20px 0;
       gap: 10px;
+      position: relative;
+      width: 210px;
+      height: 210px;
     }
     
     .mobile-controls button {
-      width: 60px;
-      height: 60px;
+      position: absolute;
+      width: 70px;
+      height: 70px;
       font-size: 1.5rem;
       background: rgba(0, 255, 65, 0.2);
       border: 2px solid var(--color-primary);
       border-radius: 10px;
+      touch-action: manipulation;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      transition: all 0.1s;
+    }
+    
+    #upBtn {
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    
+    #downBtn {
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    
+    #leftBtn {
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    
+    #rightBtn {
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
     }
     
     @media (max-width: 768px) and (hover: none) {
+      body {
+        padding-bottom: 120px; /* Space for controls */
+        overflow-y: auto;
+      }
+      
       .mobile-controls {
-        display: grid;
-        grid-template-areas:
-          ". up ."
-          "left . right"
-          ". down .";
+        display: block;
         position: fixed;
         bottom: 20px;
         left: 50%;
         transform: translateX(-50%);
         z-index: 5;
-        gap: 15px;
-      }
-      
-      .mobile-controls button {
-        width: 70px;
-        height: 70px;
-        font-size: 1.8rem;
-        background: rgba(0, 255, 65, 0.3);
-        border: 2px solid var(--color-primary);
-        border-radius: 50%;
-        touch-action: manipulation;
-        user-select: none;
-        -webkit-tap-highlight-color: transparent;
-        transition: all 0.1s;
       }
       
       canvas {
@@ -203,7 +224,7 @@
       
       .menu {
         margin-top: 10px;
-        margin-bottom: 100px;
+        margin-bottom: 20px;
         width: 95%;
       }
     }
@@ -231,13 +252,6 @@
   
   <canvas id="gameCanvas" width="400" height="400"></canvas>
 
-  <div class="mobile-controls">
-    <button id="upBtn">↑</button>
-    <button id="leftBtn">←</button>
-    <button id="rightBtn">→</button>
-    <button id="downBtn">↓</button>
-  </div>
-
   <div class="menu">
     <label><input type="checkbox" id="autoMode"> Auto Mode (Demo Snake)</label>
     <label><input type="checkbox" id="bgMusic" checked> Background Music</label>
@@ -263,6 +277,13 @@
   </div>
 
   <div id="demoText">[DEMO MODE ACTIVE]</div>
+
+  <div class="mobile-controls">
+    <button id="upBtn">W</button>
+    <button id="leftBtn">A</button>
+    <button id="rightBtn">D</button>
+    <button id="downBtn">S</button>
+  </div>
 
   <div id="gameOverScreen">
     <p>💀 GAME OVER 💀</p>
@@ -705,7 +726,7 @@
         btn.addEventListener('touchend', (e) => {
           e.preventDefault();
           btn.style.transform = 'scale(1)';
-          btn.style.background = 'rgba(0, 255, 65, 0.3)';
+          btn.style.background = 'rgba(0, 255, 65, 0.2)';
         });
       });
     }
